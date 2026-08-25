@@ -143,7 +143,7 @@ export function InspectorProvider({
       setSelections((current) =>
         current.map((selection) =>
           selection.id === id
-            ? { ...selection, note, number, id: String(number) }
+            ? { ...selection, note, number }
             : selection,
         ),
       );
@@ -209,7 +209,7 @@ export function InspectorProvider({
       setSelections((current) => [
         ...current,
         {
-          id: String(number),
+          id: newSelectionId(),
           number,
           identity: manualIdentity(),
           title: fields.title,

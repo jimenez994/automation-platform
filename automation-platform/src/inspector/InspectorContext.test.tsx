@@ -170,6 +170,23 @@ describe("Inspector state machine", () => {
     harness.unmount();
   });
 
+  it("keeps a stable id across save while assigning a number", async () => {
+    const harness = renderHarness();
+    act(() => harness.get().toggleSelector());
+    act(() => harness.get().addSelection(identity("div.a", "A")));
+    const id = harness.get().activeSelectionId!;
+
+    await act(async () => {
+      await harness.get().saveNote(id, "hello");
+    });
+
+    const saved = harness.get().selections[0];
+    expect(saved.id).toBe(id);
+    expect(saved.number).toBe(1);
+
+    harness.unmount();
+  });
+
   it("cancel discards only the new selection and returns to idle", () => {
     const harness = renderHarness();
 
