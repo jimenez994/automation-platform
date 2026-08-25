@@ -5,6 +5,7 @@ import { Notice } from "./components/Notice";
 import { Overlay } from "./components/Overlay";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { useTheme } from "./hooks/useTheme";
+import { useScan } from "./hooks/useScan";
 import { Inspector } from "./inspector/Inspector";
 import { CaseDetailPage } from "./pages/CaseDetailPage";
 import { DashboardPage } from "./pages/DashboardPage";
@@ -15,7 +16,6 @@ import { WorkspaceMissingPage } from "./pages/WorkspaceMissingPage";
 import { WorkspaceSelectPage } from "./pages/WorkspaceSelectPage";
 import { errorMessage } from "./services/format";
 import { onMenuAction } from "./services/menu";
-import { cancelScan, onScanActivity, onScanFinished, onScanProgress, startScan } from "./services/scan";
 import {
   chooseWorkspaceFolder,
   closeWorkspace,
@@ -30,11 +30,9 @@ import {
 import {
   THEME_LABELS,
   THEME_PREFERENCES,
-  type ActivityLine,
   type MenuAction,
   type RecentWorkspace,
   type ScanFinished,
-  type ScanProgress,
   type ScanReport,
   type WorkspaceState,
 } from "./types";
@@ -60,9 +58,6 @@ type OverlayKind = "preferences" | "documentation" | "shortcuts" | null;
 
 /** A scan this quick is not worth a screen of its own — as long as it was clean. */
 const AUTO_CONTINUE_MS = 1200;
-
-/** Keeps the activity log bounded on a very large workspace. */
-const MAX_ACTIVITY_LINES = 500;
 
 const SHORTCUTS: Array<[string, string]> = [
   ["New Workspace", "⌘N / Ctrl+N"],
@@ -90,11 +85,8 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  const [progress, setProgress] = useState<ScanProgress | null>(null);
-  const [activity, setActivity] = useState<ActivityLine[]>([]);
   const [finished, setFinished] = useState<ScanFinished | null>(null);
   const [lastReport, setLastReport] = useState<ScanReport | null>(null);
-  const [cancelling, setCancelling] = useState(false);
 
   const [refreshToken, setRefreshToken] = useState(0);
   const [overlay, setOverlay] = useState<OverlayKind>(null);
@@ -110,23 +102,47 @@ export default function App() {
     }
   }, []);
 
-  /** Starts a scan and switches to the loading screen. */
-  const beginScan = useCallback(async () => {
-    setProgress(null);
-    setActivity([]);
-    setFinished(null);
-    setCancelling(false);
-    setError(null);
-    setPhase("scanning");
+  /** Reacts to a finished scan: records the outcome and picks the next screen. */
+  const handleScanFinished = useCallback(
+    (result: ScanFinished) => {
+      setFinished(result);
+      setLastReport(result.outcome?.report ?? null);
+      void refreshWorkspace();
 
-    try {
-      await startScan();
-    } catch (cause) {
-      // Rejected because one is already running, or there is no workspace.
-      setError(errorMessage(cause));
-      setPhase("dashboard");
-    }
-  }, []);
+      const report = result.outcome?.report;
+      const trivial =
+        result.status === "completed" &&
+        report !== undefined &&
+        report.durationMs < AUTO_CONTINUE_MS &&
+        report.warnings.length === 0 &&
+        report.errors === 0;
+
+      // A quick, clean scan goes straight through. Anything with warnings,
+      // errors or a cancellation stops so the user actually sees it.
+      setPhase(trivial ? "dashboard" : "scanComplete");
+    },
+    [refreshWorkspace],
+  );
+
+  const scan = useScan({ onFinished: handleScanFinished });
+
+  /** Starts a scan and switches to the loading screen. */
+  const beginScan = useCallback(
+    async () => {
+      setFinished(null);
+      setError(null);
+      setPhase("scanning");
+
+      try {
+        await scan.begin();
+      } catch (cause) {
+        // Rejected because one is already running, or there is no workspace.
+        setError(errorMessage(cause));
+        setPhase("dashboard");
+      }
+    },
+    [scan.begin],
+  );
 
   /**
    * Opens a folder as a workspace and scans it.
@@ -243,15 +259,16 @@ export default function App() {
     }
   }, []);
 
-  const stopScan = useCallback(async () => {
-    setCancelling(true);
-    try {
-      await cancelScan();
-    } catch (cause) {
-      setCancelling(false);
-      setError(errorMessage(cause));
-    }
-  }, []);
+  const stopScan = useCallback(
+    async () => {
+      try {
+        await scan.cancel();
+      } catch (cause) {
+        setError(errorMessage(cause));
+      }
+    },
+    [scan.cancel],
+  );
 
   // Flips the effective theme Light ↔ Dark and stores the explicit choice. In
   // System mode the flip resolves the current system appearance first, so the
@@ -295,43 +312,6 @@ export default function App() {
       cancelled = true;
     };
   }, [beginScan]);
-
-  // ---- Scan events.
-  useEffect(() => {
-    const unlisten: Array<Promise<() => void>> = [
-      onScanProgress(setProgress),
-      onScanActivity((line) =>
-        setActivity((lines) => {
-          const next = [...lines, line];
-          return next.length > MAX_ACTIVITY_LINES
-            ? next.slice(next.length - MAX_ACTIVITY_LINES)
-            : next;
-        }),
-      ),
-      onScanFinished((result) => {
-        setFinished(result);
-        setCancelling(false);
-        setLastReport(result.outcome?.report ?? null);
-        void refreshWorkspace();
-
-        const report = result.outcome?.report;
-        const trivial =
-          result.status === "completed" &&
-          report !== undefined &&
-          report.durationMs < AUTO_CONTINUE_MS &&
-          report.warnings.length === 0 &&
-          report.errors === 0;
-
-        // A quick, clean scan goes straight through. Anything with warnings,
-        // errors or a cancellation stops so the user actually sees it.
-        setPhase(trivial ? "dashboard" : "scanComplete");
-      }),
-    ];
-
-    return () => {
-      unlisten.forEach((pending) => void pending.then((stop) => stop()));
-    };
-  }, [refreshWorkspace]);
 
   // ---- Native menu.
   //
@@ -457,9 +437,9 @@ export default function App() {
       {phase === "scanning" && workspace ? (
         <WorkspaceLoadingPage
           workspace={workspace}
-          progress={progress}
-          activity={activity}
-          cancelling={cancelling}
+          progress={scan.progress}
+          activity={scan.activity}
+          cancelling={scan.cancelling}
           error={error}
           onCancel={() => void stopScan()}
         />
@@ -469,7 +449,7 @@ export default function App() {
         <ScanCompletePage
           workspace={workspace}
           finished={finished}
-          activity={activity}
+          activity={scan.activity}
           onContinue={() => setPhase("dashboard")}
           onRetry={() => void beginScan()}
         />

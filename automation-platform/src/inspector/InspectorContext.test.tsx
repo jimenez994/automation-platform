@@ -1,29 +1,59 @@
 import { createRoot } from "react-dom/client";
 import { act } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { InspectorProvider, useInspector } from "./InspectorContext";
-import type { ElementIdentity } from "./types";
-import { createInspectorNote } from "../services/inspectorNotes";
+import type { ElementIdentity, InspectorNote, NoteStore } from "./types";
 
-// Mock the persistence layer with an auto-incrementing counter, mirroring the
-// backend's `#N` assignment.
-vi.mock("../services/inspectorNotes", () => ({
-  listInspectorNotes: vi.fn(async () => []),
-  createInspectorNote: vi.fn(async () => 1),
-  updateInspectorNote: vi.fn(async () => {}),
-  setInspectorNoteStatus: vi.fn(async () => {}),
-  removeInspectorNote: vi.fn(async () => {}),
-  clearInspectorNotes: vi.fn(async () => {}),
-}));
+/**
+ * An in-memory store with an auto-incrementing counter, mirroring the backend's
+ * `#N` assignment. Injected through the `store` prop so the state machine is
+ * exercised against a real seam rather than a mocked module.
+ */
+function inMemoryNoteStore(): NoteStore {
+  const notes = new Map<number, InspectorNote>();
+  let nextId = 0;
 
-beforeEach(() => {
-  let counter = 0;
-  vi.mocked(createInspectorNote).mockImplementation(async () => {
-    counter += 1;
-    return counter;
-  });
-});
+  return {
+    async list() {
+      return [...notes.values()];
+    },
+    async create(input) {
+      nextId += 1;
+      const note: InspectorNote = {
+        id: nextId,
+        note: input.note,
+        identity: input.identity ? (JSON.stringify(input.identity) ?? null) : null,
+        status: input.status,
+        origin: input.origin,
+        type: input.type,
+        priority: input.priority,
+        title: input.title,
+        updatedAt: new Date().toISOString(),
+      };
+      notes.set(nextId, note);
+      return nextId;
+    },
+    async update(id, edit) {
+      const note = notes.get(id);
+      if (note) {
+        notes.set(id, { ...note, ...edit, updatedAt: new Date().toISOString() });
+      }
+    },
+    async setStatus(id, status) {
+      const note = notes.get(id);
+      if (note) {
+        notes.set(id, { ...note, status, updatedAt: new Date().toISOString() });
+      }
+    },
+    async remove(id) {
+      notes.delete(id);
+    },
+    async clear() {
+      notes.clear();
+    },
+  };
+}
 
 function identity(selector: string, label: string): ElementIdentity {
   return {
@@ -46,6 +76,7 @@ function renderHarness(workspaceId: string | null = null) {
   document.body.appendChild(host);
   const root = createRoot(host);
 
+  const store = inMemoryNoteStore();
   let state: ReturnType<typeof useInspector> | null = null;
 
   function Harness() {
@@ -55,7 +86,7 @@ function renderHarness(workspaceId: string | null = null) {
 
   act(() => {
     root.render(
-      <InspectorProvider workspaceId={workspaceId}>
+      <InspectorProvider workspaceId={workspaceId} store={store}>
         <Harness />
       </InspectorProvider>,
     );

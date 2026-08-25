@@ -1,91 +1,86 @@
 /**
- * Persistence for Developer Inspector notes.
+ * Persistence for Developer Inspector notes, via the Tauri backend.
  *
- * Notes are saved to the open workspace's SQLite database via the Tauri
- * backend. Outside a real Tauri window (e.g. the unit-test jsdom environment)
- * every function resolves silently, so the inspector state machine can be
- * exercised without a backend.
+ * The state machine talks to a [`NoteStore`] interface, not to this module:
+ * [`tauriNoteStore`] is the real adapter, [`noopNoteStore`] covers running
+ * outside a Tauri window (a plain browser or jsdom), and [`defaultNoteStore`]
+ * picks between them once instead of branching on every call.
  */
 import { invoke } from "@tauri-apps/api/core";
 
 import type {
-  ElementIdentity,
-  WorkOrigin,
-  WorkPriority,
+  CreateNote,
+  InspectorNote,
+  NoteStore,
+  UpdateNote,
   WorkStatus,
-  WorkType,
 } from "../inspector/types";
-
-/** A persisted inspector note, mirroring `InspectorNote` in Rust. */
-export interface InspectorNote {
-  id: number;
-  note: string;
-  identity: string | null;
-  status: WorkStatus;
-  origin: WorkOrigin;
-  type: WorkType | null;
-  priority: WorkPriority;
-  title: string | null;
-  updatedAt: string;
-}
 
 /** True when running inside the Tauri webview (not a plain browser or jsdom). */
 function hasTauri(): boolean {
   return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 }
 
-export async function listInspectorNotes(): Promise<InspectorNote[]> {
-  if (!hasTauri()) return [];
-  return invoke<InspectorNote[]>("list_inspector_notes");
-}
+/** The real adapter: forwards each call to the Rust backend. */
+export const tauriNoteStore: NoteStore = {
+  async list() {
+    return invoke<InspectorNote[]>("list_inspector_notes");
+  },
 
-/** Creates a note and returns its new `#N`. */
-export async function createInspectorNote(
-  note: string,
-  identity: ElementIdentity | null,
-  status: WorkStatus,
-  origin: WorkOrigin,
-  type: WorkType | null,
-  priority: WorkPriority,
-  title: string | null,
-): Promise<number> {
-  if (!hasTauri()) return 0;
-  return invoke<number>("create_inspector_note", {
-    note,
-    identity: identity ? JSON.stringify(identity) : null,
-    status,
-    origin,
-    type,
-    priority,
-    title,
-  });
-}
+  async create(input: CreateNote) {
+    return invoke<number>("create_inspector_note", {
+      note: input.note,
+      identity: input.identity ? JSON.stringify(input.identity) : null,
+      status: input.status,
+      origin: input.origin,
+      type: input.type,
+      priority: input.priority,
+      title: input.title,
+    });
+  },
 
-export async function updateInspectorNote(
-  id: number,
-  note: string,
-  type: WorkType | null,
-  priority: WorkPriority,
-  title: string | null,
-): Promise<void> {
-  if (!hasTauri()) return;
-  await invoke("update_inspector_note", { id, note, type, priority, title });
-}
+  async update(id: number, edit: UpdateNote) {
+    await invoke("update_inspector_note", {
+      id,
+      note: edit.note,
+      type: edit.type,
+      priority: edit.priority,
+      title: edit.title,
+    });
+  },
 
-export async function setInspectorNoteStatus(
-  id: number,
-  status: WorkStatus,
-): Promise<void> {
-  if (!hasTauri()) return;
-  await invoke("set_inspector_note_status", { id, status });
-}
+  async setStatus(id: number, status: WorkStatus) {
+    await invoke("set_inspector_note_status", { id, status });
+  },
 
-export async function removeInspectorNote(id: number): Promise<void> {
-  if (!hasTauri()) return;
-  await invoke("remove_inspector_note", { id });
-}
+  async remove(id: number) {
+    await invoke("remove_inspector_note", { id });
+  },
 
-export async function clearInspectorNotes(): Promise<void> {
-  if (!hasTauri()) return;
-  await invoke("clear_inspector_notes");
+  async clear() {
+    await invoke("clear_inspector_notes");
+  },
+};
+
+/**
+ * The fallback used outside a Tauri window. Every call resolves silently,
+ * exactly as the old per-call `hasTauri()` guards did, so the inspector state
+ * machine can run under `npm run dev` (browser) or jsdom without a backend.
+ */
+export const noopNoteStore: NoteStore = {
+  async list() {
+    return [];
+  },
+  async create() {
+    return 0;
+  },
+  async update() {},
+  async setStatus() {},
+  async remove() {},
+  async clear() {},
+};
+
+/** The store the application should use, chosen once rather than per call. */
+export function defaultNoteStore(): NoteStore {
+  return hasTauri() ? tauriNoteStore : noopNoteStore;
 }

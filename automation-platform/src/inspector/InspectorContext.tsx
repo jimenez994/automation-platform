@@ -9,19 +9,13 @@ import {
   type ReactNode,
 } from "react";
 
-import {
-  clearInspectorNotes,
-  createInspectorNote,
-  listInspectorNotes,
-  removeInspectorNote,
-  setInspectorNoteStatus,
-  updateInspectorNote,
-} from "../services/inspectorNotes";
+import { defaultNoteStore } from "../services/inspectorNotes";
 import { manualIdentity, newSelectionId } from "./identify";
 import {
   WORK_COLUMNS,
   WORK_ORIGINS,
   type ElementIdentity,
+  type NoteStore,
   type Selection,
   type WorkOrigin,
   type WorkPriority,
@@ -68,9 +62,15 @@ const InspectorContext = createContext<InspectorState | null>(null);
 interface InspectorProviderProps {
   children: ReactNode;
   workspaceId: string | null;
+  /** Persistence seam; defaults to the Tauri adapter, or a no-op in a browser. */
+  store?: NoteStore;
 }
 
-export function InspectorProvider({ children, workspaceId }: InspectorProviderProps) {
+export function InspectorProvider({
+  children,
+  workspaceId,
+  store = defaultNoteStore(),
+}: InspectorProviderProps) {
   const [mode, setMode] = useState<InspectorMode>("idle");
   const [workManagerOpen, setWorkManagerOpen] = useState(false);
   const [selections, setSelections] = useState<Selection[]>([]);
@@ -131,15 +131,15 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
     if (!target) return;
 
     try {
-      const number = await createInspectorNote(
+      const number = await store.create({
         note,
-        target.identity,
-        target.status,
-        target.origin,
-        target.type,
-        target.priority,
-        target.title,
-      );
+        identity: target.identity,
+        status: target.status,
+        origin: target.origin,
+        type: target.type,
+        priority: target.priority,
+        title: target.title,
+      });
       setSelections((current) =>
         current.map((selection) =>
           selection.id === id
@@ -153,7 +153,7 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
 
     setActiveSelectionId(null);
     setMode("idle");
-  }, []);
+  }, [store]);
 
   // Cancel discards only the current (unsaved) work item.
   const cancelNote = useCallback(() => {
@@ -168,43 +168,44 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
   const removeSelection = useCallback((id: string) => {
     const target = selectionsRef.current.find((selection) => selection.id === id);
     if (target?.number != null) {
-      void removeInspectorNote(target.number).catch(() => {});
+      void store.remove(target.number).catch(() => {});
     }
     setSelections((current) => current.filter((selection) => selection.id !== id));
     setActiveSelectionId((current) => (current === id ? null : current));
-  }, []);
+  }, [store]);
 
   // Edits a saved work item's fields.
   const editItem = useCallback((id: string, fields: EditableItemFields) => {
     const target = selectionsRef.current.find((selection) => selection.id === id);
     if (target?.number != null) {
-      void updateInspectorNote(
-        target.number,
-        fields.note,
-        fields.type,
-        fields.priority,
-        fields.title,
-      ).catch(() => {});
+      void store
+        .update(target.number, {
+          note: fields.note,
+          type: fields.type,
+          priority: fields.priority,
+          title: fields.title,
+        })
+        .catch(() => {});
     }
     setSelections((current) =>
       current.map((selection) =>
         selection.id === id ? { ...selection, ...fields } : selection,
       ),
     );
-  }, []);
+  }, [store]);
 
   // Creates a manual work item directly (no element involved).
   const createManualItem = useCallback(async (fields: ManualItemFields) => {
     try {
-      const number = await createInspectorNote(
-        fields.note,
-        null,
-        "Backlog",
-        "Manual",
-        fields.type,
-        fields.priority,
-        fields.title,
-      );
+      const number = await store.create({
+        note: fields.note,
+        identity: null,
+        status: "Backlog",
+        origin: "Manual",
+        type: fields.type,
+        priority: fields.priority,
+        title: fields.title,
+      });
       setSelections((current) => [
         ...current,
         {
@@ -223,25 +224,25 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
     } catch (error) {
       console.error("Could not create the manual work item:", error);
     }
-  }, []);
+  }, [store]);
 
   const clearSelections = useCallback(() => {
     setSelections([]);
     setActiveSelectionId(null);
-    void clearInspectorNotes().catch(() => {});
-  }, []);
+    void store.clear().catch(() => {});
+  }, [store]);
 
   const setSelectionStatus = useCallback((id: string, status: WorkStatus) => {
     const target = selectionsRef.current.find((selection) => selection.id === id);
     if (target?.number != null) {
-      void setInspectorNoteStatus(target.number, status).catch(() => {});
+      void store.setStatus(target.number, status).catch(() => {});
     }
     setSelections((current) =>
       current.map((selection) =>
         selection.id === id ? { ...selection, status } : selection,
       ),
     );
-  }, []);
+  }, [store]);
 
   // Load the persisted notes for the open workspace.
   useEffect(() => {
@@ -251,7 +252,7 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
       if (!workspaceId) return;
 
       try {
-        const notes = await listInspectorNotes();
+        const notes = await store.list();
 
         if (cancelled) return;
 
@@ -287,7 +288,7 @@ export function InspectorProvider({ children, workspaceId }: InspectorProviderPr
     return () => {
       cancelled = true;
     };
-  }, [workspaceId]);
+  }, [workspaceId, store]);
 
   const value = useMemo(
     () => ({

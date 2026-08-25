@@ -57,3 +57,50 @@ export interface Selection {
   addedAt: string;
   status: WorkStatus;
 }
+
+/** A persisted inspector note, mirroring `InspectorNote` in Rust. */
+export interface InspectorNote {
+  id: number;
+  note: string;
+  /** JSON-encoded element identity; null for manually created items. */
+  identity: string | null;
+  status: WorkStatus;
+  origin: WorkOrigin;
+  type: WorkType | null;
+  priority: WorkPriority;
+  title: string | null;
+  updatedAt: string;
+}
+
+/** The fields for a note being created. */
+export interface CreateNote {
+  note: string;
+  identity: ElementIdentity | null;
+  status: WorkStatus;
+  origin: WorkOrigin;
+  type: WorkType | null;
+  priority: WorkPriority;
+  title: string | null;
+}
+
+/** The editable fields of an existing note. */
+export interface UpdateNote {
+  note: string;
+  type: WorkType | null;
+  priority: WorkPriority;
+  title: string | null;
+}
+
+/**
+ * Where inspector notes are persisted. The application uses the Tauri adapter;
+ * tests inject an in-memory one, so the state machine is exercised without a
+ * backend.
+ */
+export interface NoteStore {
+  list(): Promise<InspectorNote[]>;
+  create(input: CreateNote): Promise<number>;
+  update(id: number, edit: UpdateNote): Promise<void>;
+  setStatus(id: number, status: WorkStatus): Promise<void>;
+  remove(id: number): Promise<void>;
+  clear(): Promise<void>;
+}
