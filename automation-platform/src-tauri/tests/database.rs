@@ -93,6 +93,20 @@ fn inspector_notes_persist_with_auto_increment_ids() {
 }
 
 #[test]
+fn notes_reject_unknown_priority_and_type() {
+    let conn = migrated();
+
+    assert!(notes::create(&conn, "n", None, "Backlog", "App", None, "Nonsense", None).is_err());
+    assert!(notes::create(&conn, "n", None, "Backlog", "App", Some("Nonsense"), "Normal", None).is_err());
+    assert!(notes::create(&conn, "n", None, "Backlog", "App", Some("Bug"), "High", None).is_ok());
+
+    let id = notes::create(&conn, "n2", None, "Backlog", "App", None, "Normal", None).unwrap();
+    assert!(notes::update(&conn, id, "n2", Some("Nonsense"), "Normal", None).is_err());
+    assert!(notes::update(&conn, id, "n2", None, "Nonsense", None).is_err());
+    assert!(notes::update(&conn, id, "n2", Some("Feature"), "Low", None).is_ok());
+}
+
+#[test]
 fn migrations_create_the_expected_columns() {
     let conn = migrated();
 

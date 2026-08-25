@@ -14,6 +14,8 @@ import { manualIdentity, newSelectionId } from "./identify";
 import {
   WORK_COLUMNS,
   WORK_ORIGINS,
+  WORK_PRIORITIES,
+  WORK_TYPES,
   type ElementIdentity,
   type NoteStore,
   type Selection,
@@ -258,6 +260,8 @@ export function InspectorProvider({
 
         const columns = WORK_COLUMNS as readonly string[];
         const origins = WORK_ORIGINS as readonly string[];
+        const priorities = WORK_PRIORITIES as readonly string[];
+        const types = WORK_TYPES as readonly string[];
 
         setSelections(
           notes.map((note) => {
@@ -271,8 +275,8 @@ export function InspectorProvider({
               identity,
               title: note.title,
               origin: origins.includes(note.origin) ? (note.origin as WorkOrigin) : "App",
-              type: note.type,
-              priority: note.priority,
+              type: note.type != null && types.includes(note.type) ? (note.type as WorkType) : null,
+              priority: priorities.includes(note.priority) ? (note.priority as WorkPriority) : "Normal",
               note: note.note,
               addedAt: note.updatedAt,
               status: columns.includes(note.status) ? (note.status as WorkStatus) : "Backlog",

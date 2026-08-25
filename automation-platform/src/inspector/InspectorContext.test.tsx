@@ -3,16 +3,22 @@ import { act } from "react";
 import { describe, expect, it } from "vitest";
 
 import { InspectorProvider, useInspector } from "./InspectorContext";
-import type { ElementIdentity, InspectorNote, NoteStore } from "./types";
+import type {
+  ElementIdentity,
+  InspectorNote,
+  NoteStore,
+  WorkPriority,
+  WorkType,
+} from "./types";
 
 /**
  * An in-memory store with an auto-incrementing counter, mirroring the backend's
  * `#N` assignment. Injected through the `store` prop so the state machine is
  * exercised against a real seam rather than a mocked module.
  */
-function inMemoryNoteStore(): NoteStore {
-  const notes = new Map<number, InspectorNote>();
-  let nextId = 0;
+function inMemoryNoteStore(seed: InspectorNote[] = []): NoteStore {
+  const notes = new Map<number, InspectorNote>(seed.map((note) => [note.id, note]));
+  let nextId = seed.reduce((max, note) => Math.max(max, note.id), 0);
 
   return {
     async list() {
@@ -71,12 +77,12 @@ function identity(selector: string, label: string): ElementIdentity {
   };
 }
 
-function renderHarness(workspaceId: string | null = null) {
+function renderHarness(workspaceId: string | null = null, seed: InspectorNote[] = []) {
   const host = document.createElement("div");
   document.body.appendChild(host);
   const root = createRoot(host);
 
-  const store = inMemoryNoteStore();
+  const store = inMemoryNoteStore(seed);
   let state: ReturnType<typeof useInspector> | null = null;
 
   function Harness() {
@@ -281,6 +287,59 @@ describe("Inspector state machine", () => {
 
     act(() => harness.get().closeWorkManager());
     expect(harness.get().workManagerOpen).toBe(false);
+
+    harness.unmount();
+  });
+
+  it("coerces unknown priority and type on load", async () => {
+    const seed: InspectorNote[] = [
+      {
+        id: 1,
+        note: "bad priority",
+        identity: null,
+        status: "Backlog",
+        origin: "App",
+        type: "Bug",
+        priority: "Blocker" as unknown as WorkPriority,
+        title: null,
+        updatedAt: "t1",
+      },
+      {
+        id: 2,
+        note: "bad type",
+        identity: null,
+        status: "Backlog",
+        origin: "App",
+        type: "Chore" as unknown as WorkType,
+        priority: "High",
+        title: null,
+        updatedAt: "t2",
+      },
+      {
+        id: 3,
+        note: "valid",
+        identity: null,
+        status: "Backlog",
+        origin: "App",
+        type: "Feature",
+        priority: "Urgent",
+        title: null,
+        updatedAt: "t3",
+      },
+    ];
+
+    const harness = renderHarness("ws", seed);
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+
+    const selections = harness.get().selections;
+    expect(selections).toHaveLength(3);
+    expect(selections[0].priority).toBe("Normal");
+    expect(selections[1].type).toBeNull();
+    expect(selections[2].priority).toBe("Urgent");
+    expect(selections[2].type).toBe("Feature");
 
     harness.unmount();
   });

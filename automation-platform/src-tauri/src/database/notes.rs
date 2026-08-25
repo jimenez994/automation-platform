@@ -9,6 +9,11 @@ use serde::{Deserialize, Serialize};
 
 use super::DbResult;
 
+/// Priorities the inspector understands. Must match `WORK_PRIORITIES` in the frontend.
+const PRIORITIES: [&str; 4] = ["Low", "Normal", "High", "Urgent"];
+/// Work-item types the inspector understands. Must match `WORK_TYPES` in the frontend.
+const TYPES: [&str; 3] = ["Task", "Feature", "Bug"];
+
 /// One persisted inspector note.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -71,6 +76,21 @@ pub fn create(
     priority: &str,
     title: Option<&str>,
 ) -> DbResult<i64> {
+    if !PRIORITIES.contains(&priority) {
+        return Err(format!(
+            "`{priority}` is not a supported priority (expected one of {})",
+            PRIORITIES.join(", ")
+        ));
+    }
+    if let Some(type_) = type_ {
+        if !TYPES.contains(&type_) {
+            return Err(format!(
+                "`{type_}` is not a supported type (expected one of {})",
+                TYPES.join(", ")
+            ));
+        }
+    }
+
     conn.execute(
         "INSERT INTO inspector_notes (note, identity, status, origin, type, priority, title)
          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
@@ -91,6 +111,21 @@ pub fn update(
     priority: &str,
     title: Option<&str>,
 ) -> DbResult<()> {
+    if !PRIORITIES.contains(&priority) {
+        return Err(format!(
+            "`{priority}` is not a supported priority (expected one of {})",
+            PRIORITIES.join(", ")
+        ));
+    }
+    if let Some(type_) = type_ {
+        if !TYPES.contains(&type_) {
+            return Err(format!(
+                "`{type_}` is not a supported type (expected one of {})",
+                TYPES.join(", ")
+            ));
+        }
+    }
+
     conn.execute(
         "UPDATE inspector_notes
             SET note = ?1, type = ?2, priority = ?3, title = ?4, updated_at = datetime('now')
