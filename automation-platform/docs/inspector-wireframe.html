@@ -1,0 +1,425 @@
+<title>Inspector Wireframe</title>
+<style>
+  :root {
+    --bg: #e6e9ef;
+    --panel: #eff1f5;
+    --surface: #ccd0da;
+    --border: #bcc0cc;
+    --text: #4c4f69;
+    --sub: #7c7f93;
+    --accent: #8839ef;
+    --accent-soft: #ca9ee6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #292c3f;
+      --panel: #303446;
+      --surface: #414559;
+      --border: #51576d;
+      --text: #c6d0f5;
+      --sub: #a5adce;
+      --accent: #ca9ee6;
+      --accent-soft: #8839ef;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #292c3f;
+    --panel: #303446;
+    --surface: #414559;
+    --border: #51576d;
+    --text: #c6d0f5;
+    --sub: #a5adce;
+    --accent: #ca9ee6;
+    --accent-soft: #8839ef;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 40px 24px;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; }
+
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-size: 24px;
+    margin: 0 0 6px;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  .lede { color: var(--sub); margin: 0 0 36px; max-width: 60ch; }
+
+  .state { margin-bottom: 40px; }
+  .state-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sub);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .state-label::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ---- App window frame ---- */
+  .window {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    position: relative;
+    padding: 18px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .window-bar {
+    height: 26px;
+    border-radius: 6px;
+    border: 1.5px dashed var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: var(--sub);
+    font-size: 11px;
+  }
+  .app-grid { display: flex; gap: 12px; flex: 1; }
+  .app-col {
+    flex: 1;
+    border: 1.5px dashed var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    color: var(--sub);
+    font-size: 11px;
+  }
+  .app-col.tall { min-height: 140px; }
+  .rows { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  .row {
+    height: 22px;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: var(--sub);
+  }
+
+  /* ---- Inspector controls (bottom-right) ---- */
+  .controls {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    display: flex;
+    gap: 8px;
+  }
+  .icon-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sub);
+    font-size: 14px;
+  }
+  .icon-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-tag {
+    position: absolute;
+    top: -18px; right: 0;
+    font-size: 9px;
+    color: var(--sub);
+    white-space: nowrap;
+  }
+
+  /* ---- Panel ---- */
+  .panel {
+    position: absolute;
+    bottom: 64px;
+    right: 14px;
+    width: 300px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .pill {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--sub);
+  }
+  .pill.ready { color: #40a02b; border-color: #40a02b; }
+  .pill.noting { color: #df8e1d; border-color: #df8e1d; }
+  .panel-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    padding: 8px 10px;
+  }
+  .item-title { font-weight: 600; }
+  .item-sub { color: var(--sub); font-size: 11px; }
+  .item-note { color: var(--sub); font-size: 11px; margin-top: 4px; }
+  .panel-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+  }
+  .count { color: var(--sub); font-size: 11px; }
+  .btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 11px;
+    background: var(--panel);
+    color: var(--text);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.ghost { background: transparent; }
+
+  /* ---- Note form (Noting) ---- */
+  .form {
+    max-width: 380px;
+    border: 1.5px solid var(--accent);
+    border-radius: 8px;
+    background: var(--panel);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .form-label { color: var(--sub); font-size: 11px; }
+  .form-field {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    padding: 6px 8px;
+    color: var(--sub);
+    font-size: 11px;
+  }
+  .form-field.textarea { min-height: 64px; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* ---- Kanban ---- */
+  .kanban {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 14px;
+  }
+  .col {
+    flex: 1 0 140px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .col-head {
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+  .col-body { padding: 8px; display: flex; flex-direction: column; gap: 8px; min-height: 90px; }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel);
+    padding: 8px;
+  }
+  .card-title { font-weight: 600; font-size: 12px; }
+  .card-sub { color: var(--sub); font-size: 10px; }
+  .card-note { color: var(--sub); font-size: 10px; margin-top: 3px; }
+  .card-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    justify-content: flex-end;
+  }
+  .card-actions .btn { padding: 1px 6px; font-size: 10px; }
+
+  .note { color: var(--sub); font-size: 11px; margin-top: 8px; }
+  .accent { color: var(--accent); }
+</style>
+
+<div class="page">
+  <p class="kicker">Wireframe · Developer Inspector</p>
+  <h1>Inspector tool — three states</h1>
+  <p class="lede">Structure and layout only. Dashed lines are placeholder application content; solid lines are real inspector UI. Accent (mauve) marks the active control or locked state.</p>
+
+  <!-- STATE 1: controls + panel (Ready) -->
+  <section class="state">
+    <p class="state-label">State 1 · Ready — panel open, no selection</p>
+    <div class="window">
+      <div class="window-bar">Automation Platform — app window</div>
+      <div class="app-grid">
+        <div class="app-col">
+          <div class="rows">
+            <div class="row">Case summary</div>
+            <div class="row">Case table — rows…</div>
+          </div>
+        </div>
+        <div class="app-col tall">
+          <div class="rows">
+            <div class="row">Workspace sidebar</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <span class="btn-tag">Select · List · Manage</span>
+        <div class="icon-btn" title="Select">⌖</div>
+        <div class="icon-btn active" title="Selected items (open)">☰</div>
+        <div class="icon-btn" title="Work manager">▦</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span>Selected Items</span>
+          <span class="pill ready">Ready</span>
+        </div>
+        <div class="panel-body">
+          <div class="item">
+            <div class="item-title">CaseTable</div>
+            <div class="item-sub">table.case-table · src/components/CaseTable.tsx</div>
+          </div>
+          <div class="item">
+            <div class="item-title">DashboardPage Search</div>
+            <div class="item-sub">input · src/pages/DashboardPage.tsx</div>
+            <div class="item-note">Make this search input wider.</div>
+          </div>
+        </div>
+        <div class="panel-foot">
+          <span class="count">2 selected</span>
+          <button class="btn">Copy</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATE 2: Noting -->
+  <section class="state">
+    <p class="state-label">State 2 · Noting — element locked, note form open</p>
+    <div class="form">
+      <div>
+        <div class="item-title">DashboardPage Search</div>
+        <div class="item-sub">Component: DashboardPage · Source: src/pages/DashboardPage.tsx</div>
+        <div class="item-sub">Element: input · Hierarchy: DashboardPage → Search</div>
+      </div>
+      <div>
+        <div class="form-label">Note</div>
+        <div class="form-field textarea">Make this search input wider…</div>
+      </div>
+      <div class="form-actions">
+        <button class="btn ghost">Cancel</button>
+        <button class="btn primary">Save Note</button>
+      </div>
+    </div>
+    <p class="note">Selected element keeps a persistent green outline while noting. Crosshair + list + manage buttons are disabled.</p>
+  </section>
+
+  <!-- STATE 3: Work Manager -->
+  <section class="state">
+    <p class="state-label">State 3 · Work Manager — Kanban of saved notes</p>
+    <div class="window-bar" style="margin-bottom:10px">Developer Work Manager — modal ✕</div>
+    <div class="kanban">
+      <div class="col">
+        <div class="col-head">Backlog <span>2</span></div>
+        <div class="col-body">
+          <div class="card">
+            <div class="card-title">Workspace Ready</div>
+            <div class="card-sub">DashboardPage</div>
+            <div class="card-note">Remove this indicator.</div>
+            <div class="card-actions"><button class="btn">→</button><button class="btn">⛔</button></div>
+          </div>
+          <div class="card">
+            <div class="card-title">CaseTable</div>
+            <div class="card-sub">CaseTable</div>
+            <div class="card-note">Increase row height.</div>
+            <div class="card-actions"><button class="btn">→</button><button class="btn">⛔</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-head">Ready <span>1</span></div>
+        <div class="col-body">
+          <div class="card">
+            <div class="card-title">FilterBar</div>
+            <div class="card-sub">CaseTable</div>
+            <div class="card-actions"><button class="btn">←</button><button class="btn">→</button><button class="btn">⛔</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-head">In Progress <span>1</span></div>
+        <div class="col-body">
+          <div class="card">
+            <div class="card-title">Scan Cases button</div>
+            <div class="card-sub">DashboardPage</div>
+            <div class="card-note">Add a loading spinner.</div>
+            <div class="card-actions"><button class="btn">←</button><button class="btn">→</button><button class="btn">⛔</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="col"><div class="col-head">Review <span>0</span></div><div class="col-body"><span class="count">Empty</span></div></div>
+      <div class="col"><div class="col-head">Done <span>0</span></div><div class="col-body"><span class="count">Empty</span></div></div>
+      <div class="col">
+        <div class="col-head">Blocked <span>1</span></div>
+        <div class="col-body">
+          <div class="card">
+            <div class="card-title">Theme toggle</div>
+            <div class="card-sub">ThemeToggle</div>
+            <div class="card-note">Needs icon approval.</div>
+            <div class="card-actions"><button class="btn">▶</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

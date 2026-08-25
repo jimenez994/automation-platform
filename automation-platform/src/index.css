@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/*
+ * Theme tokens.
+ *
+ * Every colour in the application comes from this file. Components use the
+ * semantic utilities below (`bg-app-panel`, `text-app-subtext`, …) and never
+ * name a palette colour directly, so switching themes is a single attribute on
+ * <html> and there is no second set of colours to keep in step.
+ *
+ * Dark  — Catppuccin Frappé   (https://catppuccin.com/palette/)
+ * Light — Catppuccin Latte, the palette's own light sibling. It pairs with
+ *         Frappé by construction rather than being an inversion of it: the
+ *         hues match, the lightness ramp runs the other way.
+ */
+
+@theme {
+  --color-app-bg: var(--app-bg);
+  --color-app-panel: var(--app-panel);
+  --color-app-raised: var(--app-raised);
+  --color-app-input: var(--app-input);
+  --color-app-border: var(--app-border);
+  --color-app-border-strong: var(--app-border-strong);
+
+  --color-app-text: var(--app-text);
+  --color-app-subtext: var(--app-subtext);
+  --color-app-muted: var(--app-muted);
+
+  --color-app-accent: var(--app-accent);
+  --color-app-accent-hover: var(--app-accent-hover);
+  --color-app-on-accent: var(--app-on-accent);
+
+  --color-app-success: var(--app-success);
+  --color-app-warning: var(--app-warning);
+  --color-app-error: var(--app-error);
+  --color-app-info: var(--app-info);
+  --color-app-mauve: var(--app-mauve);
+  --color-app-inverse-bg: var(--app-inverse-bg);
+  --color-app-inverse-text: var(--app-inverse-text);
+}
+
+/* Latte. Also the pre-hydration default, before the theme is applied. */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --app-bg: #e6e9ef; /* mantle */
+  --app-panel: #eff1f5; /* base   */
+  --app-raised: #dce0e8; /* crust  */
+  --app-input: #eff1f5;
+  --app-border: #ccd0da; /* surface0 */
+  --app-border-strong: #bcc0cc; /* surface1 */
+
+  --app-text: #4c4f69; /* text     */
+  --app-subtext: #5c5f77; /* subtext1 */
+  --app-muted: #8c8fa1; /* overlay1 */
+
+  --app-accent: #1e66f5; /* blue     */
+  --app-accent-hover: #209fb5; /* sapphire */
+  --app-on-accent: #eff1f5;
+
+  --app-success: #40a02b; /* green  */
+  --app-warning: #df8e1d; /* yellow */
+  --app-error: #d20f39; /* red    */
+  --app-info: #209fb5; /* sapphire */
+  --app-mauve: #8839ef; /* mauve   */
+  --app-inverse-bg: #303446; /* Frappé base — for inverted controls */
+  --app-inverse-text: #c6d0f5; /* Frappé text */
+}
+
+/* Frappé. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --app-bg: #292c3f; /* mantle   */
+  --app-panel: #303446; /* base     */
+  --app-raised: #414559; /* surface0 */
+  --app-input: #232634; /* crust    */
+  --app-border: #414559; /* surface0 */
+  --app-border-strong: #51576d; /* surface1 */
+
+  --app-text: #c6d0f5; /* text     */
+  --app-subtext: #b5bfe2; /* subtext1 */
+  --app-muted: #838ba7; /* overlay1 */
+
+  --app-accent: #8caaee; /* blue     */
+  --app-accent-hover: #85c1dc; /* sapphire */
+  --app-on-accent: #232634;
+
+  --app-success: #a6d189; /* green  */
+  --app-warning: #e5c890; /* yellow */
+  --app-error: #e78284; /* red    */
+  --app-info: #85c1dc; /* sapphire */
+  --app-mauve: #ca9ee6; /* mauve   */
+  --app-inverse-bg: #eff1f5; /* Latte base — for inverted controls */
+  --app-inverse-text: #4c4f69; /* Latte text */
+}
+
+/*
+ * Before the stored preference has been read, follow the operating system so a
+ * dark-mode user does not get a white flash. Once the theme is applied,
+ * [data-theme] is always present and wins on specificity.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+
+    --app-bg: #292c3f;
+    --app-panel: #303446;
+    --app-raised: #414559;
+    --app-input: #232634;
+    --app-border: #414559;
+    --app-border-strong: #51576d;
+
+    --app-text: #c6d0f5;
+    --app-subtext: #b5bfe2;
+    --app-muted: #838ba7;
+
+    --app-accent: #8caaee;
+    --app-accent-hover: #85c1dc;
+    --app-on-accent: #232634;
+
+    --app-success: #a6d189;
+    --app-warning: #e5c890;
+    --app-error: #e78284;
+    --app-info: #85c1dc;
+    --app-mauve: #ca9ee6;
+    --app-inverse-bg: #eff1f5;
+    --app-inverse-text: #4c4f69;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+/* Scrollbars follow the theme too, rather than staying the browser default. */
+* {
+  scrollbar-color: var(--app-border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--app-border-strong);
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--app-muted);
+}
+
+/*
+ * Developer Inspector hover highlight. Uses the theme accent so it reads
+ * correctly in both themes without any extra colour definitions. The element
+ * is never interacted with while this is applied — clicks are captured.
+ */
+.inspector-hover {
+  outline: 2px solid var(--app-accent) !important;
+  outline-offset: 1px !important;
+}
+
+/* Persistent highlight for the locked, currently-selected element. Distinct
+   from the transient hover outline: thicker and in the success tone. */
+.inspector-selected {
+  outline: 3px solid var(--app-success) !important;
+  outline-offset: 2px !important;
+}
+
+/* Highlight for a work item selected in the Developer Work Manager. Dashed and
+   in the mauve tone so it reads as an active selection distinct from the
+   persistent saved highlight. */
+.inspector-manager-selected {
+  outline: 3px dashed var(--app-mauve) !important;
+  outline-offset: 2px !important;
+}

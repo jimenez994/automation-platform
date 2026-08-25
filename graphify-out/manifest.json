@@ -1,0 +1,507 @@
+{
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/.claude/settings.local.json": {
+    "mtime": 1787517783.580186,
+    "ast_hash": "f47c11daa34d1f438e97b591eca124e7",
+    "semantic_hash": "f47c11daa34d1f438e97b591eca124e7"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/tsconfig.node.json": {
+    "mtime": 1787507961.832357,
+    "ast_hash": "767b2e9abe6452170cdc399ca052cfbc",
+    "semantic_hash": "767b2e9abe6452170cdc399ca052cfbc"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/package.json": {
+    "mtime": 1787512512.246914,
+    "ast_hash": "c23884cc0b204144da8a8ecead37cbbc",
+    "semantic_hash": "c23884cc0b204144da8a8ecead37cbbc"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/tsconfig.json": {
+    "mtime": 1787507961.8322754,
+    "ast_hash": "468c4a26d22e95a911cbe5ff0ed9ca27",
+    "semantic_hash": "468c4a26d22e95a911cbe5ff0ed9ca27"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/vite.config.ts": {
+    "mtime": 1787508275.9617856,
+    "ast_hash": "3a7ec126e4555e7e18e935330271241b",
+    "semantic_hash": "3a7ec126e4555e7e18e935330271241b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/database/migrations/0002_workspace_cases.sql": {
+    "mtime": 1787510809.3763452,
+    "ast_hash": "d0954d478478eaa6beb994b0070eaeb9",
+    "semantic_hash": "d0954d478478eaa6beb994b0070eaeb9"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/database/migrations/0001_initial_schema.sql": {
+    "mtime": 1787510798.6609335,
+    "ast_hash": "e4d4db48678abc64fdcc3a2d3e242cf6",
+    "semantic_hash": "e4d4db48678abc64fdcc3a2d3e242cf6"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tauri.conf.json": {
+    "mtime": 1787511520.7520933,
+    "ast_hash": "ce3c1a9185ff3fe745c697946ff38de0",
+    "semantic_hash": "ce3c1a9185ff3fe745c697946ff38de0"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/build.rs": {
+    "mtime": 1787507961.8266013,
+    "ast_hash": "1be34a5c61c2c35365de3dab14298f0b",
+    "semantic_hash": "1be34a5c61c2c35365de3dab14298f0b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/capabilities/default.json": {
+    "mtime": 1787511515.6175284,
+    "ast_hash": "ef27b012b94f3930e68f395098d181b4",
+    "semantic_hash": "ef27b012b94f3930e68f395098d181b4"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tests/database.rs": {
+    "mtime": 1787511652.5438828,
+    "ast_hash": "41320d760b5146cfbdeabe6edd272df8",
+    "semantic_hash": "41320d760b5146cfbdeabe6edd272df8"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tests/scanner.rs": {
+    "mtime": 1787511922.8513021,
+    "ast_hash": "48b2db8cbdfed85f05e3d56e8fc313a2",
+    "semantic_hash": "48b2db8cbdfed85f05e3d56e8fc313a2"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tests/workspace.rs": {
+    "mtime": 1787511750.1972008,
+    "ast_hash": "36344ff00d933dcdd8797d2fab6db815",
+    "semantic_hash": "36344ff00d933dcdd8797d2fab6db815"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tests/milestone_2a.rs": {
+    "mtime": 1787516951.4456892,
+    "ast_hash": "d0476ec08e8aa0d985ad6e6c164834ec",
+    "semantic_hash": "d0476ec08e8aa0d985ad6e6c164834ec"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/tests/lifecycle.rs": {
+    "mtime": 1787512583.909028,
+    "ast_hash": "cffdd62c1292b6e6d07c2542edd53022",
+    "semantic_hash": "cffdd62c1292b6e6d07c2542edd53022"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/gen/schemas/capabilities.json": {
+    "mtime": 1787511545.9113488,
+    "ast_hash": "e9929d531724a05a8ebc0f9c4a91867a",
+    "semantic_hash": "e9929d531724a05a8ebc0f9c4a91867a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/gen/schemas/acl-manifests.json": {
+    "mtime": 1787511545.9017437,
+    "ast_hash": "f04674b350128a6fea039dd2eba43816",
+    "semantic_hash": "f04674b350128a6fea039dd2eba43816"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/gen/schemas/macOS-schema.json": {
+    "mtime": 1787511545.9082308,
+    "ast_hash": "61ee8532bb21dfdf5afb3a2ac6869e4a",
+    "semantic_hash": "61ee8532bb21dfdf5afb3a2ac6869e4a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/gen/schemas/desktop-schema.json": {
+    "mtime": 1787511545.9082308,
+    "ast_hash": "61ee8532bb21dfdf5afb3a2ac6869e4a",
+    "semantic_hash": "61ee8532bb21dfdf5afb3a2ac6869e4a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/gen/schemas/desktop-schema 2.json": {
+    "mtime": 1787508368.0,
+    "ast_hash": "6c3f18b65fe3b826c905b040074ee10d",
+    "semantic_hash": "6c3f18b65fe3b826c905b040074ee10d"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/util.rs": {
+    "mtime": 1787512006.8589897,
+    "ast_hash": "a805d2e9c9939496890e0231a5266136",
+    "semantic_hash": "a805d2e9c9939496890e0231a5266136"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/lib.rs": {
+    "mtime": 1787515760.880547,
+    "ast_hash": "cf73bc76ba3a0a459bddda500bf8f834",
+    "semantic_hash": "cf73bc76ba3a0a459bddda500bf8f834"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/state.rs": {
+    "mtime": 1787515730.0901947,
+    "ast_hash": "b8637fb1acf0964faef88eb814d20b77",
+    "semantic_hash": "b8637fb1acf0964faef88eb814d20b77"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/main.rs": {
+    "mtime": 1787507961.830485,
+    "ast_hash": "98f3bc273320658914ef9a463c20ab06",
+    "semantic_hash": "98f3bc273320658914ef9a463c20ab06"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/menu.rs": {
+    "mtime": 1787515853.0934043,
+    "ast_hash": "a56da0dfb8f395d20bde70cb26466b7d",
+    "semantic_hash": "a56da0dfb8f395d20bde70cb26466b7d"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/database/cases.rs": {
+    "mtime": 1787510978.55767,
+    "ast_hash": "c6a0c5920a1a2e07b7cb389c02789689",
+    "semantic_hash": "c6a0c5920a1a2e07b7cb389c02789689"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/database/models.rs": {
+    "mtime": 1787510886.4943924,
+    "ast_hash": "52a9de20d4a7b1bcefec5af39e2a3cf0",
+    "semantic_hash": "52a9de20d4a7b1bcefec5af39e2a3cf0"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/database/mod.rs": {
+    "mtime": 1787515321.4525263,
+    "ast_hash": "71d94fe060bb67f619a5c7e3b81023dd",
+    "semantic_hash": "71d94fe060bb67f619a5c7e3b81023dd"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/database/meta.rs": {
+    "mtime": 1787510993.7363768,
+    "ast_hash": "7b5abc5badc8143deb580fc35c0bb448",
+    "semantic_hash": "7b5abc5badc8143deb580fc35c0bb448"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/database/migrations.rs": {
+    "mtime": 1787510874.0549905,
+    "ast_hash": "982cd63e2214d3e674328976833d0495",
+    "semantic_hash": "982cd63e2214d3e674328976833d0495"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/workspace/preferences.rs": {
+    "mtime": 1787515329.307684,
+    "ast_hash": "1f56f1fdeac7191b00d47ee45838b610",
+    "semantic_hash": "1f56f1fdeac7191b00d47ee45838b610"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/workspace/metadata.rs": {
+    "mtime": 1787511136.5103283,
+    "ast_hash": "6255b0919ecce30555c8c27f4c73e019",
+    "semantic_hash": "6255b0919ecce30555c8c27f4c73e019"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/workspace/mod.rs": {
+    "mtime": 1787511967.9646273,
+    "ast_hash": "c381b683962c1f4c95fef223fd4ef71b",
+    "semantic_hash": "c381b683962c1f4c95fef223fd4ef71b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/cases/sync.rs": {
+    "mtime": 1787516940.7204633,
+    "ast_hash": "d3adfc7ce5e0a45cf631d9d8ea396d67",
+    "semantic_hash": "d3adfc7ce5e0a45cf631d9d8ea396d67"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/cases/mod.rs": {
+    "mtime": 1787516869.5594409,
+    "ast_hash": "25b9d8692643a128714b9b0259abe4f3",
+    "semantic_hash": "25b9d8692643a128714b9b0259abe4f3"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/cases/progress.rs": {
+    "mtime": 1787515161.391166,
+    "ast_hash": "219cc59422957447e47cbdb975c41973",
+    "semantic_hash": "219cc59422957447e47cbdb975c41973"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/cases/parser.rs": {
+    "mtime": 1787511274.760231,
+    "ast_hash": "2dedd5b8e842933c9b5804cca028a4be",
+    "semantic_hash": "2dedd5b8e842933c9b5804cca028a4be"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/filesystem/mod.rs": {
+    "mtime": 1787511084.7310915,
+    "ast_hash": "a0b291263ce49ccc68b2f37b72e17b88",
+    "semantic_hash": "a0b291263ce49ccc68b2f37b72e17b88"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/filesystem/scan.rs": {
+    "mtime": 1787511071.5973969,
+    "ast_hash": "44a7f0d5e4ea5bfc8ba02ea7e5a5ca2a",
+    "semantic_hash": "44a7f0d5e4ea5bfc8ba02ea7e5a5ca2a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/filesystem/reveal.rs": {
+    "mtime": 1787511082.019652,
+    "ast_hash": "07b163683c072b9c177d0368995924a8",
+    "semantic_hash": "07b163683c072b9c177d0368995924a8"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/cases.rs": {
+    "mtime": 1787515743.1149116,
+    "ast_hash": "45fe1ce64a48737e5ef086d2995975ba",
+    "semantic_hash": "45fe1ce64a48737e5ef086d2995975ba"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/database.rs": {
+    "mtime": 1787508152.7749157,
+    "ast_hash": "2a5e4b8e3e68418e638fbcffc37bcce8",
+    "semantic_hash": "2a5e4b8e3e68418e638fbcffc37bcce8"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/mod.rs": {
+    "mtime": 1787515687.5847719,
+    "ast_hash": "e8a7d8a9e8746741a8f986522fd43ec6",
+    "semantic_hash": "e8a7d8a9e8746741a8f986522fd43ec6"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/workspace.rs": {
+    "mtime": 1787515725.994241,
+    "ast_hash": "ea2bfc9eb53eb5c9ad3083fa5163f50b",
+    "semantic_hash": "ea2bfc9eb53eb5c9ad3083fa5163f50b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/scan.rs": {
+    "mtime": 1787515679.5066557,
+    "ast_hash": "69211eba495c841784264519f4af9744",
+    "semantic_hash": "69211eba495c841784264519f4af9744"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/src/commands/app.rs": {
+    "mtime": 1787515685.2175746,
+    "ast_hash": "9e97ed63ef389232d0c7338155be667c",
+    "semantic_hash": "9e97ed63ef389232d0c7338155be667c"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/.vscode/extensions.json": {
+    "mtime": 1787507961.8308125,
+    "ast_hash": "a4038619f5414c01f04abbbdd4730820",
+    "semantic_hash": "a4038619f5414c01f04abbbdd4730820"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/App.tsx": {
+    "mtime": 1787516759.8070555,
+    "ast_hash": "2bf719de985c5d9fc96d263e1c2d386b",
+    "semantic_hash": "2bf719de985c5d9fc96d263e1c2d386b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/main.tsx": {
+    "mtime": 1787508268.6577115,
+    "ast_hash": "053766b40c591d0c162e56903d90095c",
+    "semantic_hash": "053766b40c591d0c162e56903d90095c"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/vite-env.d.ts": {
+    "mtime": 1787507961.8321779,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": "0352474ba2918efe13895edbc3780d94"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/workspace.ts": {
+    "mtime": 1787512068.2306972,
+    "ast_hash": "8931bad71bae801e3a8374f70e1370ca",
+    "semantic_hash": "8931bad71bae801e3a8374f70e1370ca"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/scan.ts": {
+    "mtime": 1787515980.3575733,
+    "ast_hash": "7433333b58accde0191e3b1c2c26bc2b",
+    "semantic_hash": "7433333b58accde0191e3b1c2c26bc2b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/case.ts": {
+    "mtime": 1787512074.773618,
+    "ast_hash": "c3ce2459c6bf6ad7be1b1ccef4b38d51",
+    "semantic_hash": "c3ce2459c6bf6ad7be1b1ccef4b38d51"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/menu.ts": {
+    "mtime": 1787515987.77392,
+    "ast_hash": "4206bd6b5dc501b5c7a85a661e1e799a",
+    "semantic_hash": "4206bd6b5dc501b5c7a85a661e1e799a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/index.ts": {
+    "mtime": 1787515991.7459948,
+    "ast_hash": "e275567c1856d4e55958cc72f1f79bc2",
+    "semantic_hash": "e275567c1856d4e55958cc72f1f79bc2"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/types/theme.ts": {
+    "mtime": 1787515983.042596,
+    "ast_hash": "35e1817b013668186ddd0404a268ee67",
+    "semantic_hash": "35e1817b013668186ddd0404a268ee67"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/WorkspaceStatusBadge.tsx": {
+    "mtime": 1787516137.969885,
+    "ast_hash": "6286baae95c6e3cb1a11abb1f81b2371",
+    "semantic_hash": "6286baae95c6e3cb1a11abb1f81b2371"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/CaseSummaryBar.tsx": {
+    "mtime": 1787516159.5279737,
+    "ast_hash": "842b37f2ef66484db87b70167597f0ac",
+    "semantic_hash": "842b37f2ef66484db87b70167597f0ac"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/ProgressBar.tsx": {
+    "mtime": 1787516095.334345,
+    "ast_hash": "1e717a6c28825f3d82cff43e39bbdd42",
+    "semantic_hash": "1e717a6c28825f3d82cff43e39bbdd42"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/PhaseChecklist.tsx": {
+    "mtime": 1787516118.4747117,
+    "ast_hash": "6781976407b268f373bc32261dcb8ef4",
+    "semantic_hash": "6781976407b268f373bc32261dcb8ef4"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/ActivityLog.tsx": {
+    "mtime": 1787516132.4568987,
+    "ast_hash": "3d97ed4d1d13275699fe5b2544beddc6",
+    "semantic_hash": "3d97ed4d1d13275699fe5b2544beddc6"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/RecentWorkspaceList.tsx": {
+    "mtime": 1787516229.783545,
+    "ast_hash": "c15ab0ddce194b41e9be6269b7d3b6ef",
+    "semantic_hash": "c15ab0ddce194b41e9be6269b7d3b6ef"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/Badges.tsx": {
+    "mtime": 1787516085.3252447,
+    "ast_hash": "99f072549178d10b17f4769da87b78f2",
+    "semantic_hash": "99f072549178d10b17f4769da87b78f2"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/Button.tsx": {
+    "mtime": 1787516079.0799825,
+    "ast_hash": "34bde836054fa54e21352c64d40a3c09",
+    "semantic_hash": "34bde836054fa54e21352c64d40a3c09"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/ScanSummary.tsx": {
+    "mtime": 1787516217.6967368,
+    "ast_hash": "3832b55cbdb3e9b4c4071eb9892e4ced",
+    "semantic_hash": "3832b55cbdb3e9b4c4071eb9892e4ced"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/CaseTable.tsx": {
+    "mtime": 1787516189.161262,
+    "ast_hash": "2fb0eab42b1ddffa45cf9d41fa2d8a82",
+    "semantic_hash": "2fb0eab42b1ddffa45cf9d41fa2d8a82"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/WorkspaceSidebar.tsx": {
+    "mtime": 1787516550.324366,
+    "ast_hash": "d533ab3237f74d2bc4f91ab189673879",
+    "semantic_hash": "d533ab3237f74d2bc4f91ab189673879"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/Overlay.tsx": {
+    "mtime": 1787516542.0990345,
+    "ast_hash": "e3a6395e8e6faba0d1362a7fc0a8b591",
+    "semantic_hash": "e3a6395e8e6faba0d1362a7fc0a8b591"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/components/Notice.tsx": {
+    "mtime": 1787516088.7017107,
+    "ast_hash": "60bfe09aca92d22054c365c7003f7fc2",
+    "semantic_hash": "60bfe09aca92d22054c365c7003f7fc2"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/hooks/useTheme.ts": {
+    "mtime": 1787516534.8782663,
+    "ast_hash": "56c47f9c876143458c49a0bbf3baa296",
+    "semantic_hash": "56c47f9c876143458c49a0bbf3baa296"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/WorkspaceLoadingPage.tsx": {
+    "mtime": 1787516286.2407026,
+    "ast_hash": "5ee21e511613b064da4fc7a826e3d7fd",
+    "semantic_hash": "5ee21e511613b064da4fc7a826e3d7fd"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/ScanCompletePage.tsx": {
+    "mtime": 1787516330.2417746,
+    "ast_hash": "1e2187fde14e2d0148eeeb0394905db6",
+    "semantic_hash": "1e2187fde14e2d0148eeeb0394905db6"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/WelcomePage.tsx": {
+    "mtime": 1787516265.7811482,
+    "ast_hash": "c5fd5dd1747f0f2d023b528cad99c068",
+    "semantic_hash": "c5fd5dd1747f0f2d023b528cad99c068"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/CaseDetailPage.tsx": {
+    "mtime": 1787516488.8117723,
+    "ast_hash": "423a7c181f34ce03fe703ede89c140fb",
+    "semantic_hash": "423a7c181f34ce03fe703ede89c140fb"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/WorkspaceSelectPage.tsx": {
+    "mtime": 1787516359.2884111,
+    "ast_hash": "843b15cf7445999154bf7b5dbab60e17",
+    "semantic_hash": "843b15cf7445999154bf7b5dbab60e17"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/WorkspaceMissingPage.tsx": {
+    "mtime": 1787516369.8782322,
+    "ast_hash": "1d9b8a23d25a1d51b475e2fddded587b",
+    "semantic_hash": "1d9b8a23d25a1d51b475e2fddded587b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/pages/DashboardPage.tsx": {
+    "mtime": 1787516600.4452379,
+    "ast_hash": "03fbb6711b40c67271b9e9aff6a9326f",
+    "semantic_hash": "03fbb6711b40c67271b9e9aff6a9326f"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/workspace.ts": {
+    "mtime": 1787516050.9590063,
+    "ast_hash": "778022b90e34377d962e1623e677a3c7",
+    "semantic_hash": "778022b90e34377d962e1623e677a3c7"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/scan.ts": {
+    "mtime": 1787516029.1001115,
+    "ast_hash": "05cfafc97d2625cb2d04a98ad1b2d458",
+    "semantic_hash": "05cfafc97d2625cb2d04a98ad1b2d458"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/menu.ts": {
+    "mtime": 1787516033.3219128,
+    "ast_hash": "17ba69b93b1481599e7958dc22c8526e",
+    "semantic_hash": "17ba69b93b1481599e7958dc22c8526e"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/format.ts": {
+    "mtime": 1787516058.224815,
+    "ast_hash": "5403d5e206a1418c4b68c238228e3dab",
+    "semantic_hash": "5403d5e206a1418c4b68c238228e3dab"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/cases.ts": {
+    "mtime": 1787516053.2877858,
+    "ast_hash": "9881fa826cc09c758733d66ddf6a1e20",
+    "semantic_hash": "9881fa826cc09c758733d66ddf6a1e20"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src/services/theme.ts": {
+    "mtime": 1787516020.660587,
+    "ast_hash": "ab4f07cc5602d363479c3d40ca0ad0ea",
+    "semantic_hash": "ab4f07cc5602d363479c3d40ca0ad0ea"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/index.html": {
+    "mtime": 1787508278.2292647,
+    "ast_hash": "30500fb14143e530adf5cb794c5fd014",
+    "semantic_hash": "30500fb14143e530adf5cb794c5fd014"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/README.md": {
+    "mtime": 1787517011.2872021,
+    "ast_hash": "97b9189b64659ba36474c42b75960c89",
+    "semantic_hash": "97b9189b64659ba36474c42b75960c89"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/database/README.md": {
+    "mtime": 1787510827.564624,
+    "ast_hash": "4a0fb6ec629e0c1203c3b23d43c458ca",
+    "semantic_hash": "4a0fb6ec629e0c1203c3b23d43c458ca"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/docs/architecture.md": {
+    "mtime": 1787517024.3518395,
+    "ast_hash": "b10f14dbb4e7edaf6dd29f647574148a",
+    "semantic_hash": "b10f14dbb4e7edaf6dd29f647574148a"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/icon.png": {
+    "mtime": 1787507961.830139,
+    "ast_hash": "3fa4420986811b429d7f1654da77ac3b",
+    "semantic_hash": "3fa4420986811b429d7f1654da77ac3b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square30x30Logo.png": {
+    "mtime": 1787507961.827658,
+    "ast_hash": "7a18f38b895070303fda351bd8ae757d",
+    "semantic_hash": "7a18f38b895070303fda351bd8ae757d"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square150x150Logo.png": {
+    "mtime": 1787507961.8274274,
+    "ast_hash": "6e41a89b0a2b484f3e7f1b3a5db65730",
+    "semantic_hash": "6e41a89b0a2b484f3e7f1b3a5db65730"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/StoreLogo.png": {
+    "mtime": 1787507961.8283563,
+    "ast_hash": "02859e2326344ae7c9559f1af0abba34",
+    "semantic_hash": "02859e2326344ae7c9559f1af0abba34"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square107x107Logo.png": {
+    "mtime": 1787507961.8272161,
+    "ast_hash": "24754965fb63f23a0fad45db0ef2554b",
+    "semantic_hash": "24754965fb63f23a0fad45db0ef2554b"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square89x89Logo.png": {
+    "mtime": 1787507961.8281372,
+    "ast_hash": "2bfa099bf584686f0dd98cfafb10bda3",
+    "semantic_hash": "2bfa099bf584686f0dd98cfafb10bda3"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square310x310Logo.png": {
+    "mtime": 1787507961.8278518,
+    "ast_hash": "eeabbd0c2b13960e089e468c20f99e51",
+    "semantic_hash": "eeabbd0c2b13960e089e468c20f99e51"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square142x142Logo.png": {
+    "mtime": 1787507961.8273244,
+    "ast_hash": "55d92879c6bd61fc7e79a84e1dcc51f6",
+    "semantic_hash": "55d92879c6bd61fc7e79a84e1dcc51f6"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/128x128.png": {
+    "mtime": 1787507961.8268743,
+    "ast_hash": "fdd248e915476e6212afcb096c330992",
+    "semantic_hash": "fdd248e915476e6212afcb096c330992"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square284x284Logo.png": {
+    "mtime": 1787507961.827572,
+    "ast_hash": "b5f57838809a4d93eed8ef656ce7c2c4",
+    "semantic_hash": "b5f57838809a4d93eed8ef656ce7c2c4"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/32x32.png": {
+    "mtime": 1787507961.8271215,
+    "ast_hash": "1344a8f2569a67c695807140fb49cf10",
+    "semantic_hash": "1344a8f2569a67c695807140fb49cf10"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square44x44Logo.png": {
+    "mtime": 1787507961.8279393,
+    "ast_hash": "42c67a38757b409cec4b6eb0c25c714c",
+    "semantic_hash": "42c67a38757b409cec4b6eb0c25c714c"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/Square71x71Logo.png": {
+    "mtime": 1787507961.8280425,
+    "ast_hash": "0670843e2fc39a0e53817a47b2b3399d",
+    "semantic_hash": "0670843e2fc39a0e53817a47b2b3399d"
+  },
+  "/Users/jonathanjimenez/Documents/Developer/WorkplaceK/automation-platform/src-tauri/icons/128x128@2x.png": {
+    "mtime": 1787507961.8270338,
+    "ast_hash": "fd32cf41af4c52d279b92e9c61676130",
+    "semantic_hash": "fd32cf41af4c52d279b92e9c61676130"
+  }
+}
