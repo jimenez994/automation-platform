@@ -8,6 +8,11 @@ import type { Selection } from "./types";
  * Element-derived items carry Component / Source / Element / Selector; manual
  * items carry only a Title.
  */
+/** Escapes characters that would otherwise terminate the surrounding backtick code span. */
+function inlineCode(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/`/g, "\\`");
+}
+
 export function generateMarkdown(selections: Selection[]): string {
   const lines: string[] = ["# UI Changes"];
 
@@ -20,17 +25,17 @@ export function generateMarkdown(selections: Selection[]): string {
     lines.push("");
 
     if (title && number != null) {
-      lines.push(`Title: \`${title}\``);
+      lines.push(`Title: \`${inlineCode(title)}\``);
     }
     if (identity.component) {
-      lines.push(`Component: \`${identity.component}\``);
+      lines.push(`Component: \`${inlineCode(identity.component)}\``);
     }
     if (identity.sourceFile) {
-      lines.push(`Source: \`${identity.sourceFile}\``);
+      lines.push(`Source: \`${inlineCode(identity.sourceFile)}\``);
     }
     if (isElementItem) {
-      lines.push(`Element: \`${identity.tag}\``);
-      lines.push(`Selector: \`${identity.selector}\``);
+      lines.push(`Element: \`${inlineCode(identity.tag)}\``);
+      lines.push(`Selector: \`${inlineCode(identity.selector)}\``);
     }
 
     lines.push("");

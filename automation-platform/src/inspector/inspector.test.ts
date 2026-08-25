@@ -269,4 +269,39 @@ describe("generateMarkdown", () => {
     expect(markdown).toContain("## table");
     expect(markdown).toContain("(no note)");
   });
+
+  it("escapes backticks in a manual title", () => {
+    const markdown = generateMarkdown([
+      selection({ number: 7, title: "Widen `filter` input", note: "x" }),
+    ]);
+
+    expect(markdown).toContain("Title: `Widen \\`filter\\` input`");
+    expect(markdown).not.toContain("Title: `Widen `filter` input`");
+  });
+
+  it("escapes backticks in component, source and selector", () => {
+    const markdown = generateMarkdown([
+      selection({
+        number: 1,
+        identity: {
+          tag: "div",
+          id: null,
+          classes: ["x"],
+          testId: null,
+          label: null,
+          text: null,
+          selector: "div.x`y",
+          component: "Badge`",
+          sourceFile: "src/`weird`.tsx",
+          hierarchy: [],
+          isDeveloperTool: false,
+        },
+        note: "x",
+      }),
+    ]);
+
+    expect(markdown).toContain("Component: `Badge\\``");
+    expect(markdown).toContain("Source: `src/\\`weird\\`.tsx`");
+    expect(markdown).toContain("Selector: `div.x\\`y`");
+  });
 });
