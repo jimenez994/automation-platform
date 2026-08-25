@@ -61,6 +61,23 @@ function inMemoryNoteStore(seed: InspectorNote[] = []): NoteStore {
   };
 }
 
+/**
+ * A store whose mutations reject, used to exercise failure paths. `list`
+ * resolves to the given seed (or `[]`) unless `failList` is set, which makes
+ * `load` fail too.
+ */
+function failingStore(options: { seed?: InspectorNote[]; failList?: boolean } = {}): NoteStore {
+  const fail = () => Promise.reject(new Error("boom"));
+  return {
+    list: options.failList ? fail : () => Promise.resolve(options.seed ?? []),
+    create: fail,
+    update: fail,
+    setStatus: fail,
+    remove: fail,
+    clear: fail,
+  };
+}
+
 function identity(selector: string, label: string): ElementIdentity {
   return {
     tag: "div",
@@ -77,12 +94,16 @@ function identity(selector: string, label: string): ElementIdentity {
   };
 }
 
-function renderHarness(workspaceId: string | null = null, seed: InspectorNote[] = []) {
+function renderHarness(
+  workspaceId: string | null = null,
+  seed: InspectorNote[] = [],
+  store?: NoteStore,
+) {
   const host = document.createElement("div");
   document.body.appendChild(host);
   const root = createRoot(host);
 
-  const store = inMemoryNoteStore(seed);
+  const resolvedStore = store ?? inMemoryNoteStore(seed);
   let state: ReturnType<typeof useInspector> | null = null;
 
   function Harness() {
@@ -92,7 +113,7 @@ function renderHarness(workspaceId: string | null = null, seed: InspectorNote[] 
 
   act(() => {
     root.render(
-      <InspectorProvider workspaceId={workspaceId} store={store}>
+      <InspectorProvider workspaceId={workspaceId} store={resolvedStore}>
         <Harness />
       </InspectorProvider>,
     );
@@ -340,6 +361,124 @@ describe("Inspector state machine", () => {
     expect(selections[1].type).toBeNull();
     expect(selections[2].priority).toBe("Urgent");
     expect(selections[2].type).toBe("Feature");
+
+    harness.unmount();
+  });
+
+  it("saveNote failure keeps the modal open and sets error", async () => {
+    const harness = renderHarness(null, [], failingStore());
+
+    act(() => harness.get().toggleSelector());
+    act(() => harness.get().addSelection(identity("div.a", "A")));
+    const id = harness.get().activeSelectionId!;
+
+    await act(async () => {
+      await harness.get().saveNote(id, "hello");
+    });
+
+    expect(harness.get().mode).toBe("noting");
+    expect(harness.get().activeSelectionId).toBe(id);
+    expect(harness.get().error).not.toBeNull();
+
+    harness.unmount();
+  });
+
+  it("createManualItem failure rejects and sets error", async () => {
+    const harness = renderHarness(null, [], failingStore());
+
+    await act(async () => {
+      await expect(
+        harness.get().createManualItem({ title: "T", note: "", type: null, priority: "Normal" }),
+      ).rejects.toThrow("boom");
+    });
+
+    expect(harness.get().error).not.toBeNull();
+
+    harness.unmount();
+  });
+
+  it("removeSelection failure restores the removed selection and sets error", async () => {
+    const seed: InspectorNote[] = [
+      { id: 1, note: "x", identity: null, status: "Backlog", origin: "App", type: null, priority: "Normal", title: "T", updatedAt: "t1" },
+    ];
+    const harness = renderHarness("ws", [], failingStore({ seed }));
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+    const id = harness.get().selections[0].id;
+
+    act(() => harness.get().removeSelection(id));
+    expect(harness.get().selections).toHaveLength(0);
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(harness.get().selections).toHaveLength(1);
+    expect(harness.get().error).not.toBeNull();
+
+    harness.unmount();
+  });
+
+  it("editItem failure reverts the field and sets error", async () => {
+    const seed: InspectorNote[] = [
+      { id: 1, note: "original", identity: null, status: "Backlog", origin: "App", type: null, priority: "Normal", title: "T", updatedAt: "t1" },
+    ];
+    const harness = renderHarness("ws", [], failingStore({ seed }));
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+    const id = harness.get().selections[0].id;
+
+    act(() =>
+      harness.get().editItem(id, { note: "changed", type: null, priority: "High", title: "T" }),
+    );
+    expect(harness.get().selections[0].note).toBe("changed");
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(harness.get().selections[0].note).toBe("original");
+    expect(harness.get().error).not.toBeNull();
+
+    harness.unmount();
+  });
+
+  it("setSelectionStatus failure reverts the status and sets error", async () => {
+    const seed: InspectorNote[] = [
+      { id: 1, note: "x", identity: null, status: "Backlog", origin: "App", type: null, priority: "Normal", title: "T", updatedAt: "t1" },
+    ];
+    const harness = renderHarness("ws", [], failingStore({ seed }));
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+    const id = harness.get().selections[0].id;
+
+    act(() => harness.get().setSelectionStatus(id, "In Progress"));
+    expect(harness.get().selections[0].status).toBe("In Progress");
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(harness.get().selections[0].status).toBe("Backlog");
+    expect(harness.get().error).not.toBeNull();
+
+    harness.unmount();
+  });
+
+  it("load failure sets error", async () => {
+    const harness = renderHarness("ws", [], failingStore({ failList: true }));
+
+    await act(async () => {
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    });
+
+    expect(harness.get().error).not.toBeNull();
 
     harness.unmount();
   });

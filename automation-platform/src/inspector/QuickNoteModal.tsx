@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { Notice } from "../components/Notice";
 import { DevInfo } from "../dev/DevInfo";
 import { selectionTitle } from "./identify";
 import { useInspector } from "./InspectorContext";
@@ -32,7 +33,7 @@ function IdentityFields({ selection }: { selection: Selection }) {
  * commits the note as a new Backlog work item; Cancel discards the selection.
  */
 export function QuickNoteModal() {
-  const { mode, selections, activeSelectionId, saveNote, cancelNote } = useInspector();
+  const { mode, selections, activeSelectionId, saveNote, cancelNote, error } = useInspector();
   const [draft, setDraft] = useState("");
 
   const activeSelection = activeSelectionId
@@ -73,6 +74,8 @@ export function QuickNoteModal() {
               className="border-app-border bg-app-input text-app-text placeholder:text-app-muted focus:border-app-accent w-full resize-y rounded-md border px-2 py-1.5 text-sm focus:outline-none"
             />
           </label>
+
+          {error ? <Notice tone="error">{error}</Notice> : null}
 
           <div className="flex justify-end gap-2">
             <button

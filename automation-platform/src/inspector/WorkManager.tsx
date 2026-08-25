@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { Notice } from "../components/Notice";
 import { DevInfo } from "../dev/DevInfo";
 import { copyText } from "./clipboard";
 import { itemTitle } from "./identify";
@@ -340,8 +341,12 @@ function ManualItemForm({ onClose }: { onClose: () => void }) {
   async function save() {
     const trimmedTitle = title.trim();
     if (!trimmedTitle) return;
-    await createManualItem({ title: trimmedTitle, note, type, priority });
-    onClose();
+    try {
+      await createManualItem({ title: trimmedTitle, note, type, priority });
+      onClose();
+    } catch {
+      // the error is already surfaced through context
+    }
   }
 
   return (
@@ -434,6 +439,8 @@ export function WorkManager() {
     setSelectionStatus,
     removeSelection,
     editItem,
+    error,
+    clearError,
   } = useInspector();
   const [copied, setCopied] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -541,6 +548,19 @@ export function WorkManager() {
               </button>
             </div>
           </header>
+
+          {error ? (
+            <div className="border-app-border flex items-start justify-between gap-2 border-b px-5 py-3">
+              <Notice tone="error">{error}</Notice>
+              <button
+                type="button"
+                onClick={clearError}
+                className="text-app-muted hover:text-app-text text-xs"
+              >
+                Dismiss
+              </button>
+            </div>
+          ) : null}
 
           <div className="flex flex-1 gap-3 overflow-x-auto p-4">
             {WORK_COLUMNS.map((column) => (

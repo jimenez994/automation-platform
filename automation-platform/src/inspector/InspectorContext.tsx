@@ -32,6 +32,8 @@ interface InspectorState {
   workManagerOpen: boolean;
   selections: Selection[];
   activeSelectionId: string | null;
+  error: string | null;
+  clearError: () => void;
   toggleSelector: () => void;
   toggleWorkManager: () => void;
   closeWorkManager: () => void;
@@ -77,6 +79,9 @@ export function InspectorProvider({
   const [workManagerOpen, setWorkManagerOpen] = useState(false);
   const [selections, setSelections] = useState<Selection[]>([]);
   const [activeSelectionId, setActiveSelectionId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const clearError = useCallback(() => setError(null), []);
 
   const activeSelectionIdRef = useRef<string | null>(null);
   useEffect(() => {
@@ -149,12 +154,11 @@ export function InspectorProvider({
             : selection,
         ),
       );
+      setActiveSelectionId(null);
+      setMode("idle");
     } catch (error) {
-      console.error("Could not save the inspector note:", error);
+      setError("Could not save the work item. Please try again.");
     }
-
-    setActiveSelectionId(null);
-    setMode("idle");
   }, [store]);
 
   // Cancel discards only the current (unsaved) work item.
@@ -168,18 +172,37 @@ export function InspectorProvider({
   }, []);
 
   const removeSelection = useCallback((id: string) => {
-    const target = selectionsRef.current.find((selection) => selection.id === id);
-    if (target?.number != null) {
-      void store.remove(target.number).catch(() => {});
-    }
+    const index = selectionsRef.current.findIndex((selection) => selection.id === id);
+    if (index < 0) return;
+    const removed = selectionsRef.current[index];
+
     setSelections((current) => current.filter((selection) => selection.id !== id));
     setActiveSelectionId((current) => (current === id ? null : current));
+
+    if (removed.number != null) {
+      void store.remove(removed.number).catch(() => {
+        setSelections((current) => {
+          const next = [...current];
+          next.splice(Math.min(index, next.length), 0, removed);
+          return next;
+        });
+        setError("Could not delete the work item.");
+      });
+    }
   }, [store]);
 
   // Edits a saved work item's fields.
   const editItem = useCallback((id: string, fields: EditableItemFields) => {
     const target = selectionsRef.current.find((selection) => selection.id === id);
-    if (target?.number != null) {
+    if (!target) return;
+
+    setSelections((current) =>
+      current.map((selection) =>
+        selection.id === id ? { ...selection, ...fields } : selection,
+      ),
+    );
+
+    if (target.number != null) {
       void store
         .update(target.number, {
           note: fields.note,
@@ -187,13 +210,15 @@ export function InspectorProvider({
           priority: fields.priority,
           title: fields.title,
         })
-        .catch(() => {});
+        .catch(() => {
+          setSelections((current) =>
+            current.map((selection) =>
+              selection.id === id ? target : selection,
+            ),
+          );
+          setError("Could not save the changes.");
+        });
     }
-    setSelections((current) =>
-      current.map((selection) =>
-        selection.id === id ? { ...selection, ...fields } : selection,
-      ),
-    );
   }, [store]);
 
   // Creates a manual work item directly (no element involved).
@@ -224,26 +249,42 @@ export function InspectorProvider({
         },
       ]);
     } catch (error) {
-      console.error("Could not create the manual work item:", error);
+      setError("Could not create the work item. Please try again.");
+      throw error;
     }
   }, [store]);
 
   const clearSelections = useCallback(() => {
+    const previous = selectionsRef.current;
     setSelections([]);
     setActiveSelectionId(null);
-    void store.clear().catch(() => {});
+
+    void store.clear().catch(() => {
+      setSelections(previous);
+      setError("Could not clear the work items.");
+    });
   }, [store]);
 
   const setSelectionStatus = useCallback((id: string, status: WorkStatus) => {
     const target = selectionsRef.current.find((selection) => selection.id === id);
-    if (target?.number != null) {
-      void store.setStatus(target.number, status).catch(() => {});
-    }
+    if (!target) return;
+
     setSelections((current) =>
       current.map((selection) =>
         selection.id === id ? { ...selection, status } : selection,
       ),
     );
+
+    if (target.number != null) {
+      void store.setStatus(target.number, status).catch(() => {
+        setSelections((current) =>
+          current.map((selection) =>
+            selection.id === id ? { ...selection, status: target.status } : selection,
+          ),
+        );
+        setError("Could not move the work item.");
+      });
+    }
   }, [store]);
 
   // Load the persisted notes for the open workspace.
@@ -284,7 +325,7 @@ export function InspectorProvider({
           }),
         );
       } catch (error) {
-        console.error("Could not load the inspector notes:", error);
+        setError("Could not load the work items.");
       }
     }
 
@@ -300,6 +341,8 @@ export function InspectorProvider({
       workManagerOpen,
       selections,
       activeSelectionId,
+      error,
+      clearError,
       toggleSelector,
       toggleWorkManager,
       closeWorkManager,
@@ -317,6 +360,8 @@ export function InspectorProvider({
       workManagerOpen,
       selections,
       activeSelectionId,
+      error,
+      clearError,
       toggleSelector,
       toggleWorkManager,
       closeWorkManager,
