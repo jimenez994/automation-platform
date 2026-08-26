@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { DevInfo } from "../dev/DevInfo";
+import { DevInfo } from "dev-inspector";
 import { CaseSummaryBar } from "../components/CaseSummaryBar";
 import { CaseTable } from "../components/CaseTable";
 import { Notice } from "../components/Notice";

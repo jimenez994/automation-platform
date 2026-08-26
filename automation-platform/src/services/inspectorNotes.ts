@@ -14,7 +14,7 @@ import type {
   NoteStore,
   UpdateNote,
   WorkStatus,
-} from "../inspector/types";
+} from "dev-inspector";
 
 /** True when running inside the Tauri webview (not a plain browser or jsdom). */
 function hasTauri(): boolean {

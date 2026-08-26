@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { DevInfo } from "../dev/DevInfo";
+import { DevInfo } from "dev-inspector";
 import { formatTimestamp, parseTimestamp } from "../services/format";
 import type { Case } from "../types";
 import { PriorityBadge, StatusBadge } from "./Badges";

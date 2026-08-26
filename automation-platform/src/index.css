@@ -165,28 +165,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--app-muted);
 }
-
-/*
- * Developer Inspector hover highlight. Uses the theme accent so it reads
- * correctly in both themes without any extra colour definitions. The element
- * is never interacted with while this is applied — clicks are captured.
- */
-.inspector-hover {
-  outline: 2px solid var(--app-accent) !important;
-  outline-offset: 1px !important;
-}
-
-/* Persistent highlight for the locked, currently-selected element. Distinct
-   from the transient hover outline: thicker and in the success tone. */
-.inspector-selected {
-  outline: 3px solid var(--app-success) !important;
-  outline-offset: 2px !important;
-}
-
-/* Highlight for a work item selected in the Developer Work Manager. Dashed and
-   in the mauve tone so it reads as an active selection distinct from the
-   persistent saved highlight. */
-.inspector-manager-selected {
-  outline: 3px dashed var(--app-mauve) !important;
-  outline-offset: 2px !important;
-}

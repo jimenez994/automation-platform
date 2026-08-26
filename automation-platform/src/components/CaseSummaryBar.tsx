@@ -1,4 +1,4 @@
-import { DevInfo } from "../dev/DevInfo";
+import { DevInfo } from "dev-inspector";
 import type { CaseSummary } from "../types";
 
 interface Props {

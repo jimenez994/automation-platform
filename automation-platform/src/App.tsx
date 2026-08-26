@@ -6,7 +6,7 @@ import { Overlay } from "./components/Overlay";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { useTheme } from "./hooks/useTheme";
 import { useScan } from "./hooks/useScan";
-import { Inspector } from "./inspector/Inspector";
+import { Inspector } from "dev-inspector";
 import { CaseDetailPage } from "./pages/CaseDetailPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { ScanCompletePage } from "./pages/ScanCompletePage";
@@ -15,6 +15,7 @@ import { WorkspaceLoadingPage } from "./pages/WorkspaceLoadingPage";
 import { WorkspaceMissingPage } from "./pages/WorkspaceMissingPage";
 import { WorkspaceSelectPage } from "./pages/WorkspaceSelectPage";
 import { errorMessage } from "./services/format";
+import { defaultNoteStore } from "./services/inspectorNotes";
 import { onMenuAction } from "./services/menu";
 import {
   chooseWorkspaceFolder,
@@ -540,7 +541,7 @@ export default function App() {
         </div>
       ) : null}
 
-      <Inspector workspaceId={workspace?.workspaceId ?? null} />
+      <Inspector store={defaultNoteStore()} active={workspace != null} />
     </main>
   );
 }
